@@ -100,7 +100,7 @@
           <a href="/tes/crystal/info/index.php" class="btn btn-common wow fadeInUp"></i> Informasi </a>
           </div>
 
-           <a href="/web/crystal/signup/" class="btn btn-common wow fadeInUp"></i> Sistem Rekomendasi </a>
+           <a href="sr" class="btn btn-common wow fadeInUp"></i> Sistem Rekomendasi </a>
           </div>
 
         </div>

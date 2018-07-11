@@ -15,6 +15,7 @@ $config = [
     //          ],
     //      ],
     // ],
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'sdasdasdqw',
@@ -23,7 +24,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\DataPetugas',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -46,7 +47,6 @@ $config = [
             ],
         ],
         'db' => $db,
-
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             // Disable index.php
@@ -67,6 +67,23 @@ $config = [
             ],
         ],
         */
+    ],
+
+    'as beforeRequest' => [
+        'class' => 'yii\filters\AccessControl',
+        'rules' => [
+            [
+                'allow' => true,
+                'actions' => ['login'],
+            ],
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+        ],
+        'denyCallback' => function () {
+            return Yii::$app->response->redirect(['site/login']);
+        },
     ],
     'params' => $params,
 ];

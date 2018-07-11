@@ -30,8 +30,8 @@ class DataMakam extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ID_MAKAM'], 'required'],
-            [['ID_MAKAM', 'ID_TPU', 'NO_MAKAM', 'LETAK_MAKAM'], 'string', 'max' => 5],
+            [['NO_MAKAM', 'LETAK_MAKAM'], 'required'],
+            [['ID_MAKAM', 'ID_TPU', 'NO_MAKAM', 'LETAK_MAKAM'], 'string', 'max' => 100],
             [['ID_MAKAM'], 'unique'],
             [['ID_TPU'], 'exist', 'skipOnError' => true, 'targetClass' => DataLokasiTpu::className(), 'targetAttribute' => ['ID_TPU' => 'ID_TPU']],
         ];

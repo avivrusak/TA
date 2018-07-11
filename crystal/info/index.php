@@ -131,8 +131,29 @@ $data = array();
         map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(-7.244963, 112.750820),
           zoom: 12
-      });
+        });
+
         var infoWindow = new google.maps.InfoWindow;
+        
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Yu are here!');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
 
           // Change this depending on the name of your PHP or XML file
           downloadUrl('http://localhost/tes/crystal/info/map.php', function(data) {
@@ -162,10 +183,10 @@ $data = array();
                 map: map,
                 position: point,
                 label: icon.label
-                });
+              });
 
-               mapMarkers[indexMarker] = marker; 
-               indexMarker++;
+              mapMarkers[indexMarker] = marker; 
+              indexMarker++;
               marker.addListener('click', function() {
                 infoWindow.setContent(infowincontent);
                 infoWindow.open(map, marker);
@@ -178,7 +199,7 @@ $data = array();
         for(var i=0; i < mapMarkers.length; i++){
             mapMarkers[i].setMap(null);
         }
-         var infoWindow = new google.maps.InfoWindow;
+        var infoWindow = new google.maps.InfoWindow;
         mapMarkers = new Array();
         downloadUrl('http://localhost/tes/crystal/info/map.php?id='+id, function(data) {
             var xml = data.responseXML;
@@ -207,14 +228,14 @@ $data = array();
                 map: map,
                 position: point,
                 label: icon.label
-                });
+              });
 
-               mapMarkers[indexMarker] = marker; 
-               indexMarker++;
+              mapMarkers[indexMarker] = marker; 
+              indexMarker++;
               marker.addListener('click', function() {
                 infoWindow.setContent(infowincontent);
                 infoWindow.open(map, marker);
-            });
+              });
 
             map.setCenter(new google.maps.LatLng(parseFloat(markerElem.getAttribute('lat')),
                   parseFloat(markerElem.getAttribute('lng'))));
