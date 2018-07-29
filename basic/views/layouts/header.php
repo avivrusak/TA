@@ -17,7 +17,7 @@ use yii\helpers\Html;
 
                 <!-- User Account: style can be found in dropdown.less -->
                 <li>
-                    <?= Html::a('Keluar cok', ['site/logout'], ['class' => 'btn btn-default','data-method'=>'post']) ?>
+                    <?= Html::a('Sign Out', ['site/logout'], ['class' => 'btn btn-default','data-method'=>'post']) ?>
                 </li>
             </ul>
         </div>

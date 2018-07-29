@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use kartik\select2\Select2;
 /* @var $this yii\web\View */
 /* @var $model app\models\DataPetugas */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,9 +12,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'ID_PETUGAS')->textInput() ?>
-
-    <?= $form->field($model, 'ID_TPU')->textInput() ?>
+    <?php 
+        echo $form->field($model, 'ID_TPU')->widget(Select2::classname(), [
+            'data' => $arTPU,
+            'language' => 'de',
+            'options' => ['placeholder' => 'Select a state ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ])->label('No Makam');
+    ?>
 
     <?= $form->field($model, 'NAMA_PETUGAS')->textInput(['maxlength' => true]) ?>
 

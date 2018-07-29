@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\DataMakam;
+use app\models\DataLokasiTpu;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -40,9 +41,11 @@ class DataMakamController extends Controller
                         ->where(['ID_TPU'=>$id]),
         ]);
 
+        $namaTPU = DataLokasiTpu::find()->where(['ID_TPU'=>$id])->one()->getAttribute('nama_lokasi');
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'id'=>$id,
+            'namaTPU'=>$namaTPU
         ]);
     }
 
@@ -89,7 +92,8 @@ class DataMakamController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save(false);
             return $this->redirect(['view', 'id' => $model->ID_MAKAM]);
         } else {
             return $this->render('update', [

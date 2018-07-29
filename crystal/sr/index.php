@@ -38,7 +38,7 @@ $data = array();
         <div class="page-header">
             <h1 style="
             text-align: center;
-            ">Informasi</h1>
+            ">Sistem Rekomendasi TPU</h1>
         </div>
 
         <!-- Contact with Map - START -->
@@ -69,7 +69,7 @@ $data = array();
                                         <label for="luas">Luas Makam</label>
                                         <select name="luas" id="luas">
                                         <option value="25000-50000">25.000 - 50.000 <i>meter<sup>2</sup></i></option>
-                                        <option value="50001-1000000">5.0000 - 100.000<i>meter<sup>2</sup></i></option>
+                                        <option value="50001-1000000">50.000 - 100.000<i> meter<sup>2</sup></i></option>
                                         <option value="100001-99999999">> 100.000<i>meter<sup>2</sup></i></option>
                                       </select>
                                       </div>  

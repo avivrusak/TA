@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -13,7 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="data-lokasi-tpu-index">
 
     <p>
-        <?= Html::a('Create Data Lokasi Tpu', ['create'], ['class' => 'btn btn-success']) ?>
+        <div class="row">
+            <?= Html::a('Create Data Lokasi Tpu', ['create'], ['class' => 'btn btn-success']) ?>
+            <?php $form = ActiveForm::begin(['action' => Yii::$app->homeUrl.'search']); ?>
+            <?= Html::textInput('nama_jenazah',null ,['placeholder'=>'Nama Jenazah']); ?>
+            <div class="form-group">
+            <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+            </div>
+            <?php ActiveForm::end(); ?>
+            
+        </div>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,

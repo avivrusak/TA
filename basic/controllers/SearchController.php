@@ -3,19 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\DataJenazah;
 use app\models\DataAhliWaris;
-use yii\helpers\ArrayHelper;
-use app\models\DataMakam;
+use app\models\DataJenazah;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DataJenazahController implements the CRUD actions for DataJenazah model.
+ * DataAhliWarisController implements the CRUD actions for DataAhliWaris model.
  */
-class DataJenazahController extends Controller
+class SearchController extends Controller
 {
     /**
      * @inheritdoc
@@ -33,57 +31,54 @@ class DataJenazahController extends Controller
     }
 
     /**
-     * Lists all DataJenazah models.
+     * Lists all DataAhliWaris models.
      * @return mixed
      */
-    public function actionIndex($id, $isInput)
+    public function actionIndex()
     {
-        if ($isInput == 0) {
-            $dataProvider = new ActiveDataProvider([
-                'query' => DataJenazah::find()
-                            ->where(['ID_MAKAM'=>null])
-            ]);    
-        }else{
-            $dataProvider = new ActiveDataProvider([
-                'query' => DataJenazah::find()
-                            ->where(['ID_MAKAM'=>$id])
-            ]);
-        }
-        
+        if (Yii::$app->request->post()) {
+            // echo "string";
+            // print_r(Yii::$app->request->post());
+            $namaJenazah = Yii::$app->request->post()['nama_jenazah'];
+            if (Yii::$app->user->identity->rule ==1) {
+                $dataJenazah = DataJenazah::find()->where(['like', 'nama_jenazah', $namaJenazah]);
+            }else{
+                $dataJenazah = DataJenazah::find()->where(['like', 'nama_jenazah', $namaJenazah])->andWhere(['ID_TPU'=>Yii::$app->user->identity->ID_TPU]);
+            }
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'id'=>$id,
-        ]);
+            $dataProvider = new ActiveDataProvider([
+                'query' => $dataJenazah,
+            ]);
+            
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+            ]);
+        } 
     }
 
     /**
-     * Displays a single DataJenazah model.
+     * Displays a single DataAhliWaris model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => DataAhliWaris::find()->where(['ID_JENAZAH'=>$id]),
-        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'dataProvider'=>$dataProvider
         ]);
     }
 
     /**
-     * Creates a new DataJenazah model.
+     * Creates a new DataAhliWaris model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new DataJenazah();
+        $model = new DataAhliWaris();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ID_JENAZAH]);
+            return $this->redirect(['view', 'id' => $model->ID_AHLI_WARIS]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -92,7 +87,7 @@ class DataJenazahController extends Controller
     }
 
     /**
-     * Updates an existing DataJenazah model.
+     * Updates an existing DataAhliWaris model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -100,31 +95,18 @@ class DataJenazahController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        // $idMakam = DataJenazah::find()->select('id_makam')->where(['<>','id_makam', 'null'])->asArray()->all();
-        $dataMakam = DataMakam::find()->where(['ID_TPU'=>$model->ID_TPU])->all();
-        $n=0;
-        $dataMakamAvail = array();
-        foreach ($dataMakam as $key => $value) {
-            if ($value->jenazah == null) {
-                $dataMakamAvail[$n]['ID_MAKAM'] = $value->ID_MAKAM;
-                $dataMakamAvail[$n]['NO_MAKAM'] = $value->NO_MAKAM;
-                $n++;
-            }
-        }
-        
-        $arMakam = ArrayHelper::map($dataMakamAvail, 'ID_MAKAM', 'NO_MAKAM');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ID_JENAZAH]);
+            return $this->redirect(['view', 'id' => $model->ID_AHLI_WARIS]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'arMakam'=>$arMakam
             ]);
         }
     }
 
     /**
-     * Deletes an existing DataJenazah model.
+     * Deletes an existing DataAhliWaris model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -137,15 +119,15 @@ class DataJenazahController extends Controller
     }
 
     /**
-     * Finds the DataJenazah model based on its primary key value.
+     * Finds the DataAhliWaris model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return DataJenazah the loaded model
+     * @return DataAhliWaris the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = DataJenazah::findOne($id)) !== null) {
+        if (($model = DataAhliWaris::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

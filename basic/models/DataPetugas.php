@@ -32,7 +32,8 @@ class DataPetugas extends \yii\db\ActiveRecord implements \yii\web\IdentityInter
     {
         return [
             [['username','password', 'NAMA_PETUGAS', 'ALAMAT_'], 'required'],
-            [['ID_PETUGAS', 'ID_TPU'], 'string', 'max' => 5],
+            [['ID_TPU'], 'string', 'max' => 5],
+            [['rule'], 'integer'],
             [['NAMA_PETUGAS', 'ALAMAT_'], 'string', 'max' => 50],
             [['NO_TELP'], 'string', 'max' => 12],
             [['ID_PETUGAS'], 'unique'],

@@ -10,9 +10,6 @@ $this->title = 'Data Petugas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="data-petugas-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('Create Data Petugas', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -21,8 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'ID_PETUGAS',
-            'ID_TPU',
+            [
+                'attribute'=>'ID_TPU',
+                'label'=>'Nama TPU',
+                'value'=>function($model){
+                    return $model->iDTPU->nama_lokasi;
+                }
+            ],
             'NAMA_PETUGAS',
             'ALAMAT_',
             'NO_TELP',
@@ -30,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'rule',
             // 'username',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>'{view} {update}'
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

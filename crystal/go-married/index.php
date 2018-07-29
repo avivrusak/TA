@@ -212,32 +212,27 @@ $data = array();
                               <div class="form-group col-md-6">
                                   <label for="tpu_w">Makam</label>
 
-                                  <select class="form-control" name="tpu_w" id="tpu_w">
+                                  <select class="form-control" name="tpu_w" id="tpu_w" <?= isset($_GET['id']) ? 'disabled' : null?>>
                                             <?php while ($row = mysqli_fetch_assoc($sql)){
 
                                              ?>
 
-                                             <option value="<?php echo $row['ID_TPU'] ?>"><?php echo $row['nama_lokasi']?></option>
+                                             <option value="<?php echo $row['ID_TPU'] ?>" <?= (isset($_GET['id']) && $_GET['id'] == $row['ID_TPU']) ? 'selected' : null?>><?php echo $row['nama_lokasi']?></option>
                                              <?php } ?>
 
                                          </select>
+                                  <?php if (isset($_GET['id'])) { ?>
+                                  <input type="hidden" name="tpu_w" value="<?=$_GET['id']?>">
+                                  <?php } ?>
                               </div>
 
 
 
 
-                              <div class="form-group col-md-6">
+                              <!-- <div class="form-group col-md-6">
                                   <label for="tanggal_sewa">Tanggal Sewa</label>
                                   <input type="date" class="form-control" name="tanggal_sewa" id="tanggal_sewa">
-                              </div>
-
-
-                            
-                              
-
-
-
-                                                      
+                              </div> -->
 
                           </fieldset>
                   </div>

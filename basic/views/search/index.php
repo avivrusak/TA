@@ -20,13 +20,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'alamat',
             'tempat_lahir',
             'tanggal_lahir',
-            'id_makam',
+            // 'ID_TPU',
+            [
+                'attribute'=>'ID_TPU',
+                'label'=>'Nama TPU',
+                'value'=>function($model){
+                    return $model->tpu->nama_lokasi;
+                }
+            ],
             // 'jenis_kelamin',
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header'=> '',
-                'template'=>'{view} {update}',
+                'template'=>'{view}',
                 'buttons'=>[
                     'update'=>function($url, $model, $key){
                         if ($model->id_makam==null) {

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use kartik\select2\Select2;
 /* @var $this yii\web\View */
 /* @var $model app\models\DataJenazah */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,7 +12,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'ID_JENAZAH')->textInput() ?>
+    <?php 
+    	echo $form->field($model, 'id_makam')->widget(Select2::classname(), [
+		    'data' => $arMakam,
+		    'language' => 'de',
+		    'options' => ['placeholder' => 'Select a state ...'],
+		    'pluginOptions' => [
+		        'allowClear' => true
+		    ],
+		])->label('No Makam');
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

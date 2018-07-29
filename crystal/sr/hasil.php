@@ -12,6 +12,7 @@ $jarak = explode("-", $_POST['jarak']);
 $luas = explode("-", $_POST['luas']);
 $harga = explode("-", $_POST['harga']);
 
+
 $query = "SELECT * FROM data_lokasi_tpu WHERE (luas_lahan BETWEEN $luas[0] AND $luas[1]) AND (harga_sewa BETWEEN $harga[0] AND $harga[1])";
 
 $sql = mysqli_query ($connection, $query);
@@ -60,35 +61,37 @@ while ($row = mysqli_fetch_assoc($sql)){
 </head>
 <body>
 
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="page-header">
             <h1 style="
             text-align: center;
-            ">Informasi</h1>
+            ">Sistem Rekomendasi</h1>
         </div>
 
         <!-- Contact with Map - START -->
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
                     <div class="well well-sm">
                         <form class="form-horizontal" method="post">
                             <fieldset>
                                 <legend class="text-center header">Hasil Rekomendasi</legend>
-                                <div class="form-group col-md-10"></div>
-                                <div class="form-group col-md-10"> 
+                                <div class="form-group col-md-12"> 
                                 <table id="example" class="table table-striped table-bordered" style="width:100%">
-                          <thead>
-                              <tr>
-                                  <th>#</th>
-                                  <th>Nama Lokasi</th>
-                                  <th>Jarak</th>
-                                  <th>Aksi</th>
-                              </tr>
-                          </thead>
-                          <tbody id="data-table"></tbody>
-                      </table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama Lokasi</th>
+                                            <th>Jumlah Makam</th>
+                                            <th>Luas Lahan</th>
+                                            <th>Jarak</th>
+                                            <th>AHP</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-table"></tbody>
+                                </table>
                                 </div> 
                             </fieldset>
                         </form>
@@ -122,7 +125,7 @@ while ($row = mysqli_fetch_assoc($sql)){
 
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: new google.maps.LatLng(-7.244963, 112.750820),
+          center: new google.maps.LatLng(-7.244963, 112.750820),  
           zoom: 12
         });
 
@@ -132,48 +135,99 @@ while ($row = mysqli_fetch_assoc($sql)){
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
+              lat: -7.276169,
+              lng: 112.793825
             };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You are here!');
+            infoWindow.open(map);
             map.setCenter(pos);
 
             var tableHtml = "";
-            var nomor = 0;
-            var location;
+            var location = [];
             var sumLuas = 0, sumJarak = 0, sumHarga = 0;
-            var weightLuas = 0.633, weightJarak = 0.261, weightHarga = 0.106;
+            var weightLuas = 0.633, weightJarak = 0.261, weightHarga = 0.106; //bobot
             var jarak = [];
+            var result = [];
+            var dataMakam = [];
+            var index = 0;
 
             <?php foreach ($data as $makam) : ?>
-              var lat = "<?php echo $makam['latitude']; ?>";
-              var lng = "<?php echo $makam['longitude']; ?>";
-              var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(pos['lat'], pos['lng']), new google.maps.LatLng(lat, lng));
-              
+              var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(pos['lat'], pos['lng']), new google.maps.LatLng(<?= $makam['latitude'] ?>, <?= $makam['longitude'] ?>));
+
               if(distance >= <?=$jarak[0]?> && distance <= <?=$jarak[1]?>) {
-                jarak[<?= $makam['ID_TPU'] ?>] = distance;
+                dataMakam[index] = [];
+                dataMakam[index]['id'] = <?= $makam['ID_TPU'] ?>;
+                dataMakam[index]['nama_lokasi'] = "<?= $makam['nama_lokasi'] ?>";
+                dataMakam[index]['luas_lahan'] = <?= $makam['luas_lahan'] ?>;
+                dataMakam[index]['harga_sewa'] = <?= $makam['harga_sewa'] ?>;
+                dataMakam[index]['jarak'] = distance;
+                dataMakam[index]['jumlah_makam'] = <?=$makam['jumlah_makam']?>;
+                dataMakam[index]['lat'] = <?= $makam['latitude'] ?>;
+                dataMakam[index]['lng'] = <?= $makam['longitude'] ?>;
+                
+                sumLuas += dataMakam[index]['luas_lahan'];
+                sumJarak += distance;
+                sumHarga += dataMakam[index]['harga_sewa'];
 
-                sumLuas += <?php echo $makam['luas_lahan']; ?>;
-                sumJarak += Math.round(distance/1000);
-                sumHarga += <?php echo $makam['harga_sewa']; ?>;
-
-                location = ['<?= $makam['nama_lokasi'] ?>', lat, lng, nomor];
-
-                //add marker
-                marker = new google.maps.Marker({
-                  map: map,
-                  position: new google.maps.LatLng(location[1], location[2])
-                });
-                nomor++;
-
-                tableHtml += "<tr>"
-                +"<td>"+nomor+"</td>"
-                +"<td><?= $makam['nama_lokasi'] ?></td>"
-                +"<td>"+Math.round(distance/1000)+" km</td>"
-                +"<td><a href='#'><span class='glyphicon glyphicon-eye-open'></span></a></td>"
-                +"</tr>";
+                index++;
               }
             <?php endforeach; ?>
-            console.log("sumLuas=" + sumLuas +" | sumJarak=" + sumJarak + " | sumharga=" + sumHarga);
+            
+            console.log('=====PERHITUNGAN AHP=====');
+            for (var i = 0; i < dataMakam.length; i++) {
+              console.log(dataMakam[i]['nama_lokasi'] + ' = ' + '(' + dataMakam[i]['luas_lahan'] + '[luas]/' + sumLuas + '[sumLuas]) * ' + weightLuas + '[weightLuas] + (' + dataMakam[i]['jarak'] + '[jarak]/' + sumJarak + '[sumJarak])*' + weightJarak + '[weightJarak] + (' + dataMakam[i]['harga_sewa'] + '[harga_sewa]/' + sumHarga + '[sumHarga])*' + weightHarga + '[weightHarga]');
+              console.log('= ' + ((dataMakam[i]['luas_lahan']/sumLuas)*weightLuas) + ' + ' + ((dataMakam[i]['jarak']/sumJarak)*weightJarak) + ' + ' + ((dataMakam[i]['harga_sewa']/sumHarga)*weightHarga));
+              dataMakam[i]['ahp'] = ((dataMakam[i]['luas_lahan']/sumLuas)*weightLuas) + ((dataMakam[i]['jarak']/sumJarak)*weightJarak) + ((dataMakam[i]['harga_sewa']/sumHarga)*weightHarga);
+              console.log('= ' + dataMakam[i]['ahp']);
+            }
+            
+            for (var i = 0; i < dataMakam.length - 1; i++) {
+              for (var j = i + 1; j < dataMakam.length; j++) {
+                if (dataMakam[i]['ahp'] < dataMakam[j]['ahp']) {
+                  var temp = dataMakam[i];
+                  dataMakam[i] = dataMakam[j];
+                  dataMakam[j] = temp;
+                }
+              }
+            }
+
+            var infowindow = new google.maps.InfoWindow();
+            var marker;
+            var locations = [];
+            for (var i = 0; i < dataMakam.length; i++) {
+              locations[i] = [dataMakam[i]['nama_lokasi'], dataMakam[i]['lat'], dataMakam[i]['lng'], i];
+
+              //add marker
+              marker = new google.maps.Marker({
+                map: map,
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                title: locations[i][0]
+              });
+
+              google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                  infowindow.setContent(locations[i][0]);
+                  infowindow.open(map, marker);
+                  map.setCenter(new google.maps.LatLng(locations[i][1], locations[i][2]));
+                }
+              })(marker, i));
+
+              tableHtml += "<tr>"
+                +"<td>" + (i+1) + "</td>"
+                +"<td>" + dataMakam[i]['nama_lokasi'] + "</td>"
+                +"<td>" + dataMakam[i]['jumlah_makam'] + "</td>"
+                +"<td>" + dataMakam[i]['luas_lahan'] + " m<sup>2</sup></td>"
+                +"<td>" + Math.round(dataMakam[i]['jarak']/1000) + " km</td>"
+                +"<td>" + Math.round(dataMakam[i]['ahp'] * 1000) / 1000 +"</td>"
+                +"<td><a href='../go-married/index.php?id="+dataMakam[i]['id']+"' class='btn btn-success btn-xs'>Pesan</a></td>"
+                +"</tr>";
+            }
+
+            console.log('urutan hasil AHP');
+            console.log(dataMakam);
+
             $('#data-table').html(tableHtml);
           }, function() {
             //handleLocationError(true, infoWindow, map.getCenter());

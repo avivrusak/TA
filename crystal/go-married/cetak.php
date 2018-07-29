@@ -20,7 +20,7 @@ $conn = mysqli_connect($host, $user, $pass,$dbnm);
 //Query
 $query = "SELECT * FROM `data_ahli_waris`
             JOIN `data_jenazah` ON data_ahli_waris.ID_JENAZAH=data_jenazah.ID_JENAZAH
-            JOIN `data_lokasi_tpu` ON data_ahli_waris.ID_TPU=data_lokasi_tpu.ID_TPU
+            JOIN `data_lokasi_tpu` ON data_jenazah.ID_TPU=data_lokasi_tpu.ID_TPU
             ORDER BY data_ahli_waris.ID_AHLI_WARIS DESC
             LIMIT 1";
 $sql = mysqli_query ($conn, $query);

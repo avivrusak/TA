@@ -74,4 +74,9 @@ class DataJenazah extends \yii\db\ActiveRecord
     {
         return $this->hasOne(DataMakam::className(), ['ID_MAKAM' => 'id_makam']);
     }
+
+    public function getTpu()
+    {
+        return $this->hasOne(DataLokasiTpu::className(), ['ID_TPU' => 'ID_TPU']);
+    }
 }

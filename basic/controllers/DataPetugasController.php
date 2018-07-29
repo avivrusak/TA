@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\models\DataPetugas;
+use app\models\DataLokasiTpu;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -65,11 +67,16 @@ class DataPetugasController extends Controller
     {
         $model = new DataPetugas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $arTPU = ArrayHelper::map(DataLokasiTpu::find()->all(), 'ID_TPU', 'nama_lokasi');
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->rule = 2;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->ID_PETUGAS]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'arTPU'=>$arTPU
             ]);
         }
     }
@@ -83,12 +90,13 @@ class DataPetugasController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $arTPU = ArrayHelper::map(DataLokasiTpu::find()->all(), 'ID_TPU', 'nama_lokasi');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->ID_PETUGAS]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'arTPU'=>$arTPU
             ]);
         }
     }
