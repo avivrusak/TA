@@ -8,15 +8,19 @@ use Yii;
  * This is the model class for table "data_jenazah".
  *
  * @property integer $ID_JENAZAH
+ * @property integer $ID_MAKAM
+ * @property integer $ID_TPU
  * @property string $nama_jenazah
+ * @property integer $NIK
  * @property string $alamat
  * @property string $tempat_lahir
  * @property string $tanggal_lahir
  * @property string $jenis_kelamin
- * @property integer $id_makam
+ * @property string $tgl_pemakaman
  *
  * @property DataAhliWaris[] $dataAhliWaris
- * @property DataMakam $idMakam
+ * @property DataMakam $iDMAKAM
+ * @property DataLokasiTpu $iDTPU
  */
 class DataJenazah extends \yii\db\ActiveRecord
 {
@@ -34,12 +38,13 @@ class DataJenazah extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tempat_lahir', 'id_makam'], 'required'],
-            [['tanggal_lahir', 'tgl_pemakaman', 'ID_TPU'], 'safe'],
-            [['id_makam', 'ID_TPU'], 'integer'],
+            [['ID_MAKAM', 'ID_TPU', 'NIK'], 'integer'],
+            [['ID_TPU', 'NIK', 'tempat_lahir', 'tgl_pemakaman'], 'required'],
+            [['tanggal_lahir', 'tgl_pemakaman'], 'safe'],
             [['nama_jenazah', 'alamat'], 'string', 'max' => 50],
             [['tempat_lahir', 'jenis_kelamin'], 'string', 'max' => 10],
-            // [['id_makam'], 'exist', 'skipOnError' => true, 'targetClass' => DataMakam::className(), 'targetAttribute' => ['id_makam' => 'ID_MAKAM']],
+            [['ID_MAKAM'], 'exist', 'skipOnError' => true, 'targetClass' => DataMakam::className(), 'targetAttribute' => ['ID_MAKAM' => 'ID_MAKAM']],
+            [['ID_TPU'], 'exist', 'skipOnError' => true, 'targetClass' => DataLokasiTpu::className(), 'targetAttribute' => ['ID_TPU' => 'ID_TPU']],
         ];
     }
 
@@ -50,12 +55,15 @@ class DataJenazah extends \yii\db\ActiveRecord
     {
         return [
             'ID_JENAZAH' => 'Id  Jenazah',
+            'ID_MAKAM' => 'Id  Makam',
+            'ID_TPU' => 'Id  Tpu',
             'nama_jenazah' => 'Nama Jenazah',
+            'NIK' => 'Nik',
             'alamat' => 'Alamat',
             'tempat_lahir' => 'Tempat Lahir',
             'tanggal_lahir' => 'Tanggal Lahir',
             'jenis_kelamin' => 'Jenis Kelamin',
-            'id_makam' => 'Id Makam',
+            'tgl_pemakaman' => 'Tgl Pemakaman',
         ];
     }
 
@@ -70,12 +78,15 @@ class DataJenazah extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdMakam()
+    public function getIDMAKAM()
     {
-        return $this->hasOne(DataMakam::className(), ['ID_MAKAM' => 'id_makam']);
+        return $this->hasOne(DataMakam::className(), ['ID_MAKAM' => 'ID_MAKAM']);
     }
 
-    public function getTpu()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIDTPU()
     {
         return $this->hasOne(DataLokasiTpu::className(), ['ID_TPU' => 'ID_TPU']);
     }

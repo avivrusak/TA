@@ -7,12 +7,13 @@ use Yii;
 /**
  * This is the model class for table "data_makam".
  *
- * @property string $ID_MAKAM
- * @property string $ID_TPU
+ * @property integer $ID_MAKAM
+ * @property integer $ID_KOMPLEK
  * @property string $NO_MAKAM
  * @property string $LETAK_MAKAM
  *
- * @property DataLokasiTpu $iDTPU
+ * @property DataJenazah[] $dataJenazahs
+ * @property DataKomplek $iDKOMPLEK
  */
 class DataMakam extends \yii\db\ActiveRecord
 {
@@ -30,10 +31,9 @@ class DataMakam extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['NO_MAKAM', 'LETAK_MAKAM'], 'required'],
-            [['ID_MAKAM', 'ID_TPU', 'NO_MAKAM', 'LETAK_MAKAM'], 'string', 'max' => 100],
-            // [['ID_MAKAM'], 'unique'],
-            [['ID_TPU'], 'exist', 'skipOnError' => true, 'targetClass' => DataLokasiTpu::className(), 'targetAttribute' => ['ID_TPU' => 'ID_TPU']],
+            [['ID_KOMPLEK'], 'integer'],
+            [['NO_MAKAM', 'LETAK_MAKAM'], 'string', 'max' => 100],
+            [['ID_KOMPLEK'], 'exist', 'skipOnError' => true, 'targetClass' => DataKomplek::className(), 'targetAttribute' => ['ID_KOMPLEK' => 'ID_KOMPLEK']],
         ];
     }
 
@@ -44,7 +44,7 @@ class DataMakam extends \yii\db\ActiveRecord
     {
         return [
             'ID_MAKAM' => 'Id  Makam',
-            'ID_TPU' => 'Id  Tpu',
+            'ID_KOMPLEK' => 'Id  Komplek',
             'NO_MAKAM' => 'No  Makam',
             'LETAK_MAKAM' => 'Letak  Makam',
         ];
@@ -53,13 +53,16 @@ class DataMakam extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIDTPU()
+    public function getDataJenazahs()
     {
-        return $this->hasOne(DataLokasiTpu::className(), ['ID_TPU' => 'ID_TPU']);
+        return $this->hasMany(DataJenazah::className(), ['ID_MAKAM' => 'ID_MAKAM']);
     }
 
-    public function getJenazah()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIDKOMPLEK()
     {
-        return $this->hasMany(DataJenazah::className(), ['id_makam' => 'ID_MAKAM']);
+        return $this->hasOne(DataKomplek::className(), ['ID_KOMPLEK' => 'ID_KOMPLEK']);
     }
 }

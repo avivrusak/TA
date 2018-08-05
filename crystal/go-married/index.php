@@ -115,9 +115,14 @@ $data = array();
                           <fieldset>
                               <legend>Data Diri Jenazah</legend>
 
-                              <div class="form-group col-md-12">
+                              <div class="form-group col-md-6">
                                   <label for="nama_jenazah">Nama</label>
                                   <input type="text" class="form-control" name="nama_jenazah" id="full_name" placeholder="Full Name">
+                              </div>
+
+                              <div class="form-group col-md-6">
+                                  <label for="NIK">NIK</label>
+                                  <input type="text" class="form-control" name="NIK" id="NIK" placeholder="NIK">
                               </div>
 
                               <div class="form-group col-md-12">
@@ -171,9 +176,14 @@ $data = array();
                           <fieldset>
                               <legend>Data Ahli Waris</legend>
 
-                              <div class="form-group col-md-12">
+                              <div class="form-group col-md-6">
                                   <label for="nama_w">Nama</label>
                                   <input type="text" class="form-control" name="nama_w" id="nama_w" placeholder="Nama Lengkap">
+                              </div>
+
+                              <div class="form-group col-md-6">
+                                  <label for="NIK_w">NIk</label>
+                                  <input type="text" class="form-control" name="NIK_w" id="NIK_w" placeholder="NIK">
                               </div>
 
                               <div class="form-group col-md-12">
@@ -222,7 +232,7 @@ $data = array();
 
                                          </select>
                                   <?php if (isset($_GET['id'])) { ?>
-                                  <input type="hidden" name="tpu_w" value="<?=$_GET['id']?>">
+                                  z<input type="hidden" name="tpu_w" value="<?=$_GET['id']?>">
                                   <?php } ?>
                               </div>
 

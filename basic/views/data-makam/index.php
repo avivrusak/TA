@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php $form = ActiveForm::begin(['action' => Yii::$app->homeUrl.'search']); ?>
         <?= Html::textInput('nama_jenazah',null ,['placeholder'=>'Nama Jenazah']); ?>
         <div class="form-group">
-            <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </p>

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\DataMakam;
 use app\models\DataLokasiTpu;
+use app\models\DataKomplek;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -36,15 +37,17 @@ class DataMakamController extends Controller
      */
     public function actionIndex($id)
     {
+        $komplek = DataKomplek::findOne(['ID_TPU' => $id]);
         $dataProvider = new ActiveDataProvider([
             'query' => DataMakam::find()
-                        ->where(['ID_TPU'=>$id]),
+                        ->joinWith('iDKOMPLEK')
+                        ->where(['data_komplek.ID_TPU'=>$id]),
         ]);
-
-        $namaTPU = DataLokasiTpu::find()->where(['ID_TPU'=>$id])->one()->getAttribute('nama_lokasi');
+        $namaTPU = DataLokasiTpu::find()->where(['ID_TPU'=>$komplek->ID_TPU])->one()->getAttribute('nama_lokasi');
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'id'=>$id,
+            'namaKomplek'=>$komplek->nama_komplek,
             'namaTPU'=>$namaTPU
         ]);
     }
@@ -71,8 +74,9 @@ class DataMakamController extends Controller
         $model = new DataMakam();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->ID_TPU = $id;
-            $model->save();
+            if (!$model->save()) {
+                var_dump($model->errors); die();
+            } 
             return $this->redirect(['view', 'id' => $model->ID_MAKAM]);
         } else {
             return $this->render('create', [

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\DataMakam */
 
 $this->title = $model->ID_MAKAM;
-$this->params['breadcrumbs'][] = ['label' => 'Data Makams', 'url' => ['index', 'id'=>$model->ID_TPU]];
+$this->params['breadcrumbs'][] = ['label' => 'Data Makams', 'url' => ['index', 'id'=>Yii::$app->user->identity->ID_TPU]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="data-makam-view">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'ID_MAKAM',
-            'ID_TPU',
+            'ID_KOMPLEK',
             'NO_MAKAM',
             'LETAK_MAKAM',
         ],

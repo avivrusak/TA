@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'alamat',
             'tempat_lahir',
             'tanggal_lahir',
-            'id_makam',
+            'ID_MAKAM',
             // 'jenis_kelamin',
 
             [
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template'=>'{view} {update}',
                 'buttons'=>[
                     'update'=>function($url, $model, $key){
-                        if ($model->id_makam==null) {
+                        if ($model->ID_MAKAM==null) {
                             return Html::a('Update', $url, ['class' => 'btn btn-primary']);
                         }
                     },

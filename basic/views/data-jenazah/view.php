@@ -8,14 +8,16 @@ use yii\widgets\Pjax;
 /* @var $model app\models\DataJenazah */
 
 $this->title = $model->nama_jenazah;
-$this->params['breadcrumbs'][] = ['label' => 'Data Jenazahs', 'url' => ['index', 'id'=>($model->id_makam == null) ? $model->ID_TPU : $model->id_makam, 'isInput'=> ($model->id_makam == null) ? 0 : 1]];
+$this->params['breadcrumbs'][] = ['label' => 'Data Jenazahs', 'url' => ['index', 'id'=>($model->ID_MAKAM == null) ? $model->ID_TPU : $model->ID_MAKAM, 'isInput'=> ($model->ID_MAKAM == null) ? 0 : 1]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="data-jenazah-view">
     <p>
-        <?php if ($model->id_makam == null) { ?>
+        <?php if ($model->ID_MAKAM == null) { ?>
         <?= Html::a('Update', ['update', 'id' => $model->ID_JENAZAH], ['class' => 'btn btn-primary']) ?>
-        <?php } ?>
+        <?php } else {
+            echo Html::a('Cetak tanda terima', ['cetak', 'id' => $model->ID_JENAZAH], ['class' => 'btn btn-primary']);
+        }?>
         
     </p>
 
@@ -29,11 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'tanggal_lahir',
             'jenis_kelamin',
             [
-                'attribute'=>'id_makam',
+                'attribute'=>'ID_MAKAM',
                 'label' => 'No Makam',
                 'value'=>function($model){
-                    if ($model->id_makam != null) {
-                        return $model->idMakam->NO_MAKAM;
+                    if ($model->ID_MAKAM != null) {
+                        return $model->iDMAKAM->NO_MAKAM;
                     }
                 }
             ]

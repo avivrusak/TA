@@ -10,14 +10,13 @@ use Yii;
  * @property integer $ID_TPU
  * @property string $nama_lokasi
  * @property string $alamat_lokasi
- * @property string $jumlah_makam
- * @property string $luas_lahan
+ * @property integer $jumlah_makam
+ * @property integer $luas_lahan
  * @property integer $harga_sewa
  * @property double $latitude
  * @property double $longitude
  *
- * @property DataAhliWaris[] $dataAhliWaris
- * @property DataMakam[] $dataMakams
+ * @property DataKomplek[] $dataKompleks
  * @property DataPetugas[] $dataPetugas
  */
 class DataLokasiTpu extends \yii\db\ActiveRecord
@@ -36,12 +35,11 @@ class DataLokasiTpu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['harga_sewa'], 'integer'],
+            [['alamat_lokasi'], 'string'],
+            [['jumlah_makam', 'luas_lahan', 'harga_sewa'], 'integer'],
             [['latitude', 'longitude'], 'required'],
             [['latitude', 'longitude'], 'number'],
             [['nama_lokasi'], 'string', 'max' => 50],
-            [['alamat_lokasi'], 'string', 'max' => 100],
-            [['jumlah_makam', 'luas_lahan'], 'string', 'max' => 10],
         ];
     }
 
@@ -65,17 +63,9 @@ class DataLokasiTpu extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDataAhliWaris()
+    public function getDataKompleks()
     {
-        return $this->hasMany(DataAhliWaris::className(), ['ID_TPU' => 'ID_TPU']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDataMakams()
-    {
-        return $this->hasMany(DataMakam::className(), ['ID_TPU' => 'ID_TPU']);
+        return $this->hasMany(DataKomplek::className(), ['ID_TPU' => 'ID_TPU']);
     }
 
     /**

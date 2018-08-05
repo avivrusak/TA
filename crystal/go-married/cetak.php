@@ -46,7 +46,7 @@ foreach ($header as $kolom) {
 }
 
 $header = array( 
-    array("label"=>"email: go-married@gmail.com fax: 0317998678 web: http://go-married.com/", "length"=>0, "align"=>"C")
+    array("label"=>"email: DKRTH@gmail.com fax: 0317998678 web: http://DKRTH.kotaSurabaya/", "length"=>0, "align"=>"C")
 );
 
 $pdf->SetFont('Arial','I','10');

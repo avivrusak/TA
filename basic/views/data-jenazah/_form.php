@@ -13,10 +13,10 @@ use kartik\select2\Select2;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php 
-    	echo $form->field($model, 'id_makam')->widget(Select2::classname(), [
+    	echo $form->field($model, 'ID_MAKAM')->widget(Select2::classname(), [
 		    'data' => $arMakam,
-		    'language' => 'de',
-		    'options' => ['placeholder' => 'Select a state ...'],
+		    'language' => 'id',
+		    'options' => ['placeholder' => 'Pilih Makam ...'],
 		    'pluginOptions' => [
 		        'allowClear' => true
 		    ],
