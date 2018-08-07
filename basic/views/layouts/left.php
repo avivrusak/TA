@@ -32,7 +32,7 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
-                    ['label' => 'Data Komplek', 'icon' => 'home', 'url' => ['/data-komplek']],
+                    ['label' => 'Data Blok', 'icon' => 'home', 'url' => ['/data-block']],
                     ['label' => 'Data Makam', 'icon' => 'file-code-o', 'url' => ['/data-makam', 'id'=>Yii::$app->user->identity->ID_TPU]],
                     ['label' => 'Report ', 'icon' => 'dashboard', 'url' => ['/site/report']],
                     // ['label' => 'Data Petugas ', 'icon' => 'dashboard', 'url' => ['/data-petugas']],

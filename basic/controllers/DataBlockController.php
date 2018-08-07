@@ -3,17 +3,17 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\DataBlok;
 use app\models\DataKomplek;
-use app\models\DataMakam;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DataKomplekController implements the CRUD actions for DataKomplek model.
+ * DataBlockController implements the CRUD actions for DataBlok model.
  */
-class DataKomplekController extends Controller
+class DataBlockController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,53 +31,52 @@ class DataKomplekController extends Controller
     }
 
     /**
-     * Lists all DataKomplek models.
+     * Lists all DataBlok models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => DataKomplek::find()->where(['ID_TPU' => Yii::$app->user->identity->ID_TPU]),
+            'query' => DataBlok::find()->where(['ID_TPU'=>Yii::$app->user->identity->ID_TPU]),
         ]);
-
+        // $model = DataBlok::find()->all();
+        // print_r($model[0]->countJenazah);
+        // die();
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single DataKomplek model.
+     * Displays a single DataBlok model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => DataMakam::find()
-                        ->where(['ID_KOMPLEK'=>$id]),
+            'query' => DataKomplek::find()->where(['ID_BLOK' => $id]),
         ]);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'dataProvider' => $dataProvider
+            'dataProvider'=>$dataProvider
         ]);
     }
 
     /**
-     * Creates a new DataKomplek model.
+     * Creates a new DataBlok model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($idBlok)
+    public function actionCreate($idTpu)
     {
-        $model = new DataKomplek();
+        $model = new DataBlok();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->ID_BLOK = $idBlok;
-            if (!$model->save()) {
-                var_dump($model->errors); die();
-            }
-            return $this->redirect(['view', 'id' => $model->ID_KOMPLEK]);
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->ID_TPU = $idTpu;
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->ID_BLOK]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -86,7 +85,7 @@ class DataKomplekController extends Controller
     }
 
     /**
-     * Updates an existing DataKomplek model.
+     * Updates an existing DataBlok model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +95,7 @@ class DataKomplekController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ID_KOMPLEK]);
+            return $this->redirect(['view', 'id' => $model->ID_BLOK]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -105,7 +104,7 @@ class DataKomplekController extends Controller
     }
 
     /**
-     * Deletes an existing DataKomplek model.
+     * Deletes an existing DataBlok model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,15 +117,15 @@ class DataKomplekController extends Controller
     }
 
     /**
-     * Finds the DataKomplek model based on its primary key value.
+     * Finds the DataBlok model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return DataKomplek the loaded model
+     * @return DataBlok the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = DataKomplek::findOne($id)) !== null) {
+        if (($model = DataBlok::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

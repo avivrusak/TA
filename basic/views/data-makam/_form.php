@@ -19,7 +19,9 @@ use kartik\select2\Select2;
 
     <?php 
     	echo $form->field($model, 'ID_KOMPLEK')->widget(Select2::classname(), [
-		    'data' => ArrayHelper::map(DataKomplek::find()->where(['ID_TPU' => Yii::$app->user->identity->ID_TPU])->all(), 'ID_KOMPLEK', 'nama_komplek'),
+		    'data' => ArrayHelper::map(DataKomplek::find()
+                                        ->joinWith('iDBLOK')
+                                        ->where(['data_blok.ID_TPU' => Yii::$app->user->identity->ID_TPU])->all(), 'ID_KOMPLEK', 'nama_komplek'),
 		    'language' => 'id',
 		    'options' => ['placeholder' => 'Pilih komplek ...'],
 		    'pluginOptions' => [

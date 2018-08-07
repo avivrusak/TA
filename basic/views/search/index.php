@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'ID_TPU',
                 'label'=>'Nama TPU',
                 'value'=>function($model){
-                    return $model->tpu->nama_lokasi;
+                    return $model->iDTPU->nama_lokasi;
                 }
             ],
             // 'jenis_kelamin',

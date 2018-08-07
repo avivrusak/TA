@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "data_komplek".
  *
  * @property integer $ID_KOMPLEK
- * @property integer $ID_TPU
+ * @property integer $ID_BLOK
  * @property string $agama
  * @property string $nama_komplek
  *
- * @property DataLokasiTpu $iDTPU
+ * @property DataBlok $iDBLOK
  * @property DataMakam[] $dataMakams
  */
 class DataKomplek extends \yii\db\ActiveRecord
@@ -31,11 +31,11 @@ class DataKomplek extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ID_TPU', 'agama', 'nama_komplek'], 'required'],
-            [['ID_TPU'], 'integer'],
+            [['agama', 'nama_komplek'], 'required'],
+            [['ID_BLOK'], 'integer'],
             [['agama'], 'string', 'max' => 20],
             [['nama_komplek'], 'string', 'max' => 30],
-            [['ID_TPU'], 'exist', 'skipOnError' => true, 'targetClass' => DataLokasiTpu::className(), 'targetAttribute' => ['ID_TPU' => 'ID_TPU']],
+            [['ID_BLOK'], 'exist', 'skipOnError' => true, 'targetClass' => DataBlok::className(), 'targetAttribute' => ['ID_BLOK' => 'ID_BLOK']],
         ];
     }
 
@@ -45,19 +45,19 @@ class DataKomplek extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ID_KOMPLEK' => 'Id  Komplek',
-            'ID_TPU' => 'Id  Tpu',
-            'agama' => 'Agama',
-            'nama_komplek' => 'Nama Komplek',
+            'ID_KOMPLEK' => Yii::t('app', 'Id  Komplek'),
+            'ID_BLOK' => Yii::t('app', 'Id  Blok'),
+            'agama' => Yii::t('app', 'Agama'),
+            'nama_komplek' => Yii::t('app', 'Nama Komplek'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIDTPU()
+    public function getIDBLOK()
     {
-        return $this->hasOne(DataLokasiTpu::className(), ['ID_TPU' => 'ID_TPU']);
+        return $this->hasOne(DataBlok::className(), ['ID_BLOK' => 'ID_BLOK']);
     }
 
     /**
@@ -66,5 +66,17 @@ class DataKomplek extends \yii\db\ActiveRecord
     public function getDataMakams()
     {
         return $this->hasMany(DataMakam::className(), ['ID_KOMPLEK' => 'ID_KOMPLEK']);
+    }
+
+    public function getCountJenzah($value='')
+    {
+        // $array = array();
+        $totalJenazah = 0;
+        // return ;
+        foreach ($this->dataMakams as $key => $value) {
+            $cnt = count($value->dataJenazahs);
+            $totalJenazah += $cnt;
+        }
+        return $totalJenazah;
     }
 }

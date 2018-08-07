@@ -65,8 +65,8 @@ use app\models\DataLokasiTpu;
                     echo "<tr>
                         <td>$i</td>
                         <td>$jenazah->tgl_pemakaman</td>
-                        <td>".$jenazah->iDMAKAM->LETAK_MAKAM."</td>
-                        <td>".$jenazah->iDMAKAM->NO_MAKAM."</td>
+                        <td>".($jenazah->iDMAKAM!=null?$jenazah->iDMAKAM->iDKOMPLEK->iDBLOK->nama:'-')."</td>
+                        <td>".($jenazah->iDMAKAM!=null?$jenazah->iDMAKAM->NO_MAKAM:'-')."</td>
                         <td>".($ahliWaris != null? $ahliWaris->nama_ahli_waris : '-')."</td>
                         <td>$jenazah->alamat</td>
                         <td>$jenazah->nama_jenazah</td>

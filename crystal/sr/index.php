@@ -80,7 +80,7 @@ $data = array();
                                     <div class="col-md-10 col-md-offset-1">
                                       <label for="harga">Harga Sewa</label>
                                       <select name="harga" id="harga">
-                                        <option value="500000-750000">Rp 500.000 - Rp 750.000</option>
+                                        <option value="0-750000">Rp 500.000 - Rp 750.000</option>
                                         <option value="750001-1000000">Rp 750.000 - Rp 1.000.000</option>
                                         <option value="1000001-999999999">> Rp 1.000.000</option>
                                       </select>  

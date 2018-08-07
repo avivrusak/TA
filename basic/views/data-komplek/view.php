@@ -27,8 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'ID_KOMPLEK',
-            'ID_TPU',
+            // 'ID_BLOK',
+            [
+                'attribute'=>'ID_BLOK',
+                'value'=>function($model){
+                    return $model->iDBLOK->nama;
+                }
+            ],
             'agama',
             'nama_komplek',
         ],

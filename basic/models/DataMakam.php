@@ -43,10 +43,10 @@ class DataMakam extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ID_MAKAM' => 'Id  Makam',
-            'ID_KOMPLEK' => 'Id  Komplek',
-            'NO_MAKAM' => 'No  Makam',
-            'LETAK_MAKAM' => 'Letak  Makam',
+            'ID_MAKAM' => Yii::t('app', 'Id  Makam'),
+            'ID_KOMPLEK' => Yii::t('app', 'Id  Komplek'),
+            'NO_MAKAM' => Yii::t('app', 'No  Makam'),
+            'LETAK_MAKAM' => Yii::t('app', 'Letak  Makam'),
         ];
     }
 

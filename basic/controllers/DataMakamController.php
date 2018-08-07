@@ -37,18 +37,18 @@ class DataMakamController extends Controller
      */
     public function actionIndex($id)
     {
-        $komplek = DataKomplek::findOne(['ID_TPU' => $id]);
+        // $komplek = DataKomplek::findOne(['ID_TPU' => $id]);
         $dataProvider = new ActiveDataProvider([
             'query' => DataMakam::find()
-                        ->joinWith('iDKOMPLEK')
-                        ->where(['data_komplek.ID_TPU'=>$id]),
+                        ->joinWith('iDKOMPLEK.iDBLOK')
+                        ->where(['data_blok.ID_TPU'=>$id]),
         ]);
-        $namaTPU = DataLokasiTpu::find()->where(['ID_TPU'=>$komplek->ID_TPU])->one()->getAttribute('nama_lokasi');
+        // $namaTPU = DataLokasiTpu::find()->where(['ID_TPU'=>$komplek->ID_TPU])->one()->getAttribute('nama_lokasi');
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'id'=>$id,
-            'namaKomplek'=>$komplek->nama_komplek,
-            'namaTPU'=>$namaTPU
+            // 'namaKomplek'=>$komplek->nama_komplek,
+            // 'namaTPU'=>$namaTPU
         ]);
     }
 

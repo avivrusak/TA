@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Data Makam '.$namaTPU;
+// $this->title = 'Data Makam '.$namaTPU;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="data-makam-index">
